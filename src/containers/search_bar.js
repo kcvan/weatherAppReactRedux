@@ -5,9 +5,9 @@ export default class SearchBar extends Component {
     super(props);
 
     this.state = { term: "" };
-    // remember that whenever we pass off a function that references "this", the "this" is not bound to
-    // the component, meaning we have to bind it or use a fat arrow function (look below).
-    // Whenever we had a callback off, and the callback references "this", you have to bind or 
+    // remember that whenever we pass off a function that references "this" inside of the function, 
+    // the "this" is not bound to the component, meaning we have to bind it or use a fat arrow function 
+    // in our jsx. Whenever we had a callback off, and the callback references "this", you have to bind or 
     // use a fat arrow function to correct the context.
     this.onInputChange = this.onInputChange.bind(this);
   }
