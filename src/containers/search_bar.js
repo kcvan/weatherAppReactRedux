@@ -12,6 +12,8 @@ export default class SearchBar extends Component {
     this.onInputChange = this.onInputChange.bind(this);
   }
   
+  // You cant use a fat arrow function inside a class, so you ether write the callback out 
+  // in the event handler, or you bind it in the constructor.
   onInputChange(event) {
     console.log(event.target.value);
     this.setState({term:event.target.value});
