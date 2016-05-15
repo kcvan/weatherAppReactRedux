@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { fetchWeather } from "../actions/index";
 
 export default class SearchBar extends Component {
   constructor(props) {
@@ -10,6 +13,7 @@ export default class SearchBar extends Component {
     // in our jsx. Whenever we had a callback off, and the callback references "this", you have to bind or 
     // use a fat arrow function to correct the context.
     this.onInputChange = this.onInputChange.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
   }
   
   // You cant use a fat arrow function inside a class, so you ether write the callback out 
@@ -20,9 +24,15 @@ export default class SearchBar extends Component {
     this.setState({term:event.target.value});
   }
 
+  // Rememer that since we're making a function that references "this", we have to bind it.
   onFormSubmit(event) {
     // This will tell the browser to not submit the form itself
     event.preventDefault();
+    if(this.props)
+    // We need to go and fetch weather data
+    this.props.fetchWeather(this.state.term);
+    // This will clear the input
+    this.setState({ term: "" });
   }
 
   // When you press enter ony our keyboard while a form element child is focused (search bar or submit button),
@@ -52,3 +62,13 @@ export default class SearchBar extends Component {
     );
   }
 }
+// Remember that this causes the action creater, whenever it gets called and returned an acton,
+// bindActionCreator makes sure that it flows down into the middleware and then to our reducers.
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchWeather }, dispatch);
+}
+
+// Now we have access to the fetchWeather function from redux.
+// Why is this null? We understand that redux has some state, but this container does not care about
+// it at all, so we have to pass in null to get to pass in the the second argument.
+export default connect(null, mapDispatchToProps)(SearchBar);
